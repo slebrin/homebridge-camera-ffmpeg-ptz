@@ -82,7 +82,7 @@
     "plugin-ui": "rsync ./src/homebridge-ui/public/index.html ./dist/homebridge-ui/public/",
     "build": "npm run clean && tsc && npm run plugin-ui",
     "prepublishOnly": "npm run lint && npm run build && npm run plugin-ui && npm run docs && npm run docs:lint",
-    "postpublish": "npm run clean && npm ci",
+    "postpublish": "npm run clean && shx rm -rf ./.typedoc && npm ci",
     "clean": "shx rm -rf ./dist",
     "test": "vitest run",
     "test:watch": "vitest watch",

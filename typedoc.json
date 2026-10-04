@@ -1,5 +1,5 @@
 {
-  "out": "docs",
+  "out": ".typedoc",
   "exclude": ["src/**/*.spec.ts"],
   "entryPoints": [
     "src/index.ts"
