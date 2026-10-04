@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.1.1](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.1.1) (2026-10-04)
+
+### Fixed
+- Retry ONVIF event subscriptions after transient camera or network startup timeouts.
+
 ## [1.1.0](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.1.0) (2026-10-04)
 
 ### Added

@@ -30,6 +30,7 @@ const DEFAULT_PTZ_LABELS: Record<PtzDirection, string> = {
   left: 'Gauche',
   right: 'Droite',
 }
+const ONVIF_EVENT_RETRY_DELAY = 30000
 
 function getPtzPresetSubtype(preset: PtzPreset): string {
   const tokenHash = createHash('sha1').update(preset.token).digest('hex').slice(0, 12)
@@ -51,6 +52,7 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
   private readonly ptzRequestIds: Map<string, number> = new Map()
   private readonly onvifEventConfigs: Map<string, OnvifEventsConfig> = new Map()
   private readonly onvifEventListeners: Map<string, OnvifEventListener> = new Map()
+  private readonly onvifEventRetryTimers: Map<string, NodeJS.Timeout> = new Map()
   private readonly mqttActions: Map<string, Map<string, Array<MqttAction>>> = new Map()
 
   constructor(log: Logging, config: PlatformConfig, api: API) {
@@ -122,6 +124,10 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
       for (const listener of this.onvifEventListeners.values()) {
         listener.stop()
       }
+      for (const timer of this.onvifEventRetryTimers.values()) {
+        clearTimeout(timer)
+      }
+      this.onvifEventRetryTimers.clear()
     })
   }
 
@@ -486,6 +492,11 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
   }
 
   private startOnvifEvents(accessory: PlatformAccessory, camera: CameraConfig): void {
+    const retryTimer = this.onvifEventRetryTimers.get(accessory.UUID)
+    if (retryTimer) {
+      clearTimeout(retryTimer)
+      this.onvifEventRetryTimers.delete(accessory.UUID)
+    }
     const previousListener = this.onvifEventListeners.get(accessory.UUID)
     previousListener?.stop()
     this.onvifEventListeners.delete(accessory.UUID)
@@ -517,7 +528,18 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
       .then(() => this.log.info('ONVIF event listener initialized; waiting for camera events.', camera.name))
       .catch((error: unknown) => {
         const failure = error instanceof Error ? error : new Error(String(error))
-        this.log.error(`Could not start ONVIF event subscription: ${failure.message}`, camera.name)
+        if (this.onvifEventListeners.get(accessory.UUID) !== listener) {
+          return
+        }
+        listener.stop()
+        this.onvifEventListeners.delete(accessory.UUID)
+        this.log.error(`Could not start ONVIF event subscription: ${failure.message}. Retrying in ${ONVIF_EVENT_RETRY_DELAY / 1000} seconds.`, camera.name)
+        const timer = setTimeout(() => {
+          this.onvifEventRetryTimers.delete(accessory.UUID)
+          this.startOnvifEvents(accessory, camera)
+        }, ONVIF_EVENT_RETRY_DELAY)
+        timer.unref()
+        this.onvifEventRetryTimers.set(accessory.UUID, timer)
       })
   }
 
