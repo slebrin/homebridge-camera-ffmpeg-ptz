@@ -235,10 +235,12 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
     if (ptzConfig) {
       this.ptzControllers.set(accessory.UUID, new OnvifPtzController(ptzConfig))
       for (const direction of PTZ_DIRECTIONS) {
+        const serviceName = `${cameraConfig.name} PTZ ${direction}`
         const service = new this.api.hap.Service.Switch(
-          `${cameraConfig.name} PTZ ${direction}`,
+          serviceName,
           PTZ_SWITCH_SUBTYPES[direction],
         )
+        service.setCharacteristic(this.api.hap.Characteristic.ConfiguredName, serviceName)
         service
           .getCharacteristic(this.api.hap.Characteristic.On)
           .on(CharacteristicEventTypes.SET, (state: CharacteristicValue, callback: CharacteristicSetCallback) => {
@@ -257,7 +259,9 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
         accessory.addService(service)
       }
 
-      const stopService = new this.api.hap.Service.Switch(`${cameraConfig.name} PTZ Stop`, PTZ_STOP)
+      const stopServiceName = `${cameraConfig.name} PTZ Stop`
+      const stopService = new this.api.hap.Service.Switch(stopServiceName, PTZ_STOP)
+      stopService.setCharacteristic(this.api.hap.Characteristic.ConfiguredName, stopServiceName)
       stopService
         .getCharacteristic(this.api.hap.Characteristic.On)
         .on(CharacteristicEventTypes.SET, (state: CharacteristicValue, callback: CharacteristicSetCallback) => {
@@ -276,10 +280,12 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
       accessory.addService(stopService)
 
       for (const preset of ptzConfig.presets ?? []) {
+        const presetServiceName = `${cameraConfig.name} PTZ ${preset.name}`
         const presetService = new this.api.hap.Service.Switch(
-          `${cameraConfig.name} PTZ ${preset.name}`,
+          presetServiceName,
           getPtzPresetSubtype(preset),
         )
+        presetService.setCharacteristic(this.api.hap.Characteristic.ConfiguredName, presetServiceName)
         presetService
           .getCharacteristic(this.api.hap.Characteristic.On)
           .on(CharacteristicEventTypes.SET, (state: CharacteristicValue, callback: CharacteristicSetCallback) => {

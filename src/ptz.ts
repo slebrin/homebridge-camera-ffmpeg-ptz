@@ -26,7 +26,7 @@ export class OnvifPtzController {
   move(direction: PtzDirection): Promise<void> {
     return this.enqueue(async () => {
       const camera = await this.getCamera()
-      const profileToken = camera.defaultProfile?.token
+      const profileToken = this.getProfileToken(camera)
       if (!profileToken) {
         throw new Error('The ONVIF camera did not provide a usable media profile.')
       }
@@ -45,8 +45,12 @@ export class OnvifPtzController {
   stop(): Promise<void> {
     return this.enqueue(async () => {
       const camera = await this.getCamera()
+      const profileToken = this.getProfileToken(camera)
+      if (!profileToken) {
+        throw new Error('The ONVIF camera did not provide a usable media profile.')
+      }
       await this.request(callback => camera.stop({
-        profileToken: camera.defaultProfile?.token,
+        profileToken,
         panTilt: true,
         zoom: true,
       }, callback))
@@ -56,7 +60,7 @@ export class OnvifPtzController {
   gotoPreset(presetToken: string): Promise<void> {
     return this.enqueue(async () => {
       const camera = await this.getCamera()
-      const profileToken = camera.defaultProfile?.token
+      const profileToken = this.getProfileToken(camera)
       if (!profileToken) {
         throw new Error('The ONVIF camera did not provide a usable media profile.')
       }
@@ -106,6 +110,28 @@ export class OnvifPtzController {
     }
 
     return this.connecting
+  }
+
+  private getProfileToken(camera: Cam): string | undefined {
+    const profiles = camera.profiles ?? []
+    const ptzProfile = profiles.find(profile => profile.PTZConfiguration)
+    const candidates = [
+      ptzProfile,
+      camera.defaultProfile,
+      profiles[0],
+    ]
+
+    for (const profile of candidates) {
+      const token = profile?.token ?? profile?.$?.token
+      if (typeof token === 'string' && token.trim()) {
+        return token
+      }
+    }
+
+    const activeProfileToken = camera.activeSource?.profileToken
+    return typeof activeProfileToken === 'string' && activeProfileToken.trim()
+      ? activeProfileToken
+      : undefined
   }
 
   private request(run: (callback: (error: Error | null) => void) => void): Promise<void> {

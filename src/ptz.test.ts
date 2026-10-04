@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('onvif', () => ({
   Cam: mocks.Cam.mockImplementation(() => ({
-    defaultProfile: { token: 'profile-token' },
+    defaultProfile: { $: { token: 'profile-token' } },
     connect: mocks.connect,
     continuousMove: mocks.continuousMove,
     gotoPreset: mocks.gotoPreset,
@@ -80,6 +80,27 @@ describe('OnvifPtzController', () => {
 
     expect(mocks.gotoPreset).toHaveBeenCalledWith(
       { profileToken: 'profile-token', preset: 'preset-token' },
+      expect.any(Function),
+    )
+  })
+
+  it('prefers a PTZ-capable profile when the camera exposes multiple profiles', async () => {
+    mocks.Cam.mockImplementationOnce(() => ({
+      profiles: [
+        { $: { token: 'video-only-profile' } },
+        { $: { token: 'ptz-profile' }, PTZConfiguration: { name: 'PTZ' } },
+      ],
+      connect: mocks.connect,
+      continuousMove: mocks.continuousMove,
+      gotoPreset: mocks.gotoPreset,
+      stop: mocks.stop,
+    }))
+    const controller = new OnvifPtzController({ enabled: true, host: 'camera.local' })
+
+    await controller.move('right')
+
+    expect(mocks.continuousMove).toHaveBeenCalledWith(
+      expect.objectContaining({ profileToken: 'ptz-profile' }),
       expect.any(Function),
     )
   })

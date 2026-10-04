@@ -2,7 +2,7 @@
   "name": "homebridge-camera-ffmpeg-ptz",
   "displayName": "Homebridge Camera FFmpeg PTZ",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Homebridge Plugin Providing FFmpeg-based Camera Support with PTZ Controls",
   "author": {
     "name": "Khaos Tian"

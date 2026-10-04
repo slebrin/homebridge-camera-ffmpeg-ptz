@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.0.1](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.1) (2026-10-04)
+
+### Fixed
+- Use the media profile token format returned by ONVIF cameras such as Imou models.
+- Prefer a PTZ-capable media profile when multiple ONVIF profiles are available.
+- Expose distinct configured names for HomeKit PTZ switches.
+
 ## [4.1.0](https://github.com/homebridge-plugins/homebridge-camera-ffmpeg/releases/tag/v4.1.0) (2025-09-18)
 
 ## What's Changed
