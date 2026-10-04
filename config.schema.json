@@ -435,6 +435,16 @@
                 "type": "boolean",
                 "description": "Enables audio streaming from camera."
               },
+              "audioCodec": {
+                "title": "Audio Codec",
+                "type": "string",
+                "default": "AAC-eld",
+                "enum": [
+                  "AAC-eld",
+                  "OPUS"
+                ],
+                "description": "Codec advertised to HomeKit for live audio. OPUS uses 24 kHz and may improve choppy audio; AAC-eld at 16 kHz remains the compatibility default."
+              },
               "debug": {
                 "title": "FFmpeg Debug Logging",
                 "type": "boolean",
@@ -577,6 +587,7 @@
                 "cameras[].videoConfig.packetSize",
                 "cameras[].videoConfig.mapvideo",
                 "cameras[].videoConfig.mapaudio",
+                "cameras[].videoConfig.audioCodec",
                 "cameras[].videoConfig.videoFilter",
                 "cameras[].videoConfig.encoderOptions",
                 "cameras[].videoConfig.debug"

@@ -78,6 +78,16 @@ export class StreamingDelegate implements CameraStreamingDelegate {
     }
     this.recordingDelegate = this.recording ? new RecordingDelegate(this.log, this.cameraName, this.videoConfig, this.api, this.hap, this.videoProcessor) : null
 
+    const audioCodec = this.videoConfig.audioCodec === 'OPUS'
+      ? {
+          type: AudioStreamingCodecType.OPUS,
+          samplerate: AudioStreamingSamplerate.KHZ_24,
+        }
+      : {
+          type: AudioStreamingCodecType.AAC_ELD,
+          samplerate: AudioStreamingSamplerate.KHZ_16,
+        }
+
     const options: CameraControllerOptions = {
       cameraStreamCount: this.videoConfig.maxStreams ?? 2, // HomeKit requires at least 2 streams, but 1 is also just fine
       delegate: this,
@@ -104,14 +114,7 @@ export class StreamingDelegate implements CameraStreamingDelegate {
         },
         audio: {
           twoWayAudio: !!this.videoConfig.returnAudioTarget,
-          codecs: [
-            {
-              type: AudioStreamingCodecType.AAC_ELD,
-              samplerate: AudioStreamingSamplerate.KHZ_16,
-              /* type: AudioStreamingCodecType.OPUS,
-              samplerate: AudioStreamingSamplerate.KHZ_24 */
-            },
-          ],
+          codecs: [audioCodec],
         },
       },
       recording: !this.recording ? undefined : {

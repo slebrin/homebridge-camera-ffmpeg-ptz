@@ -24,7 +24,8 @@ vi.mock('homebridge', () => ({
     OPUS: 3
   },
   AudioStreamingSamplerate: {
-    KHZ_16: 16000
+    KHZ_16: 16000,
+    KHZ_24: 24000
   },
   StreamRequestTypes: {
     START: 0,
@@ -122,5 +123,21 @@ describe('StreamingDelegate Timeout Logic', () => {
     expect(() => {
       new StreamingDelegate(mockLog, cameraConfig, mockAPI, mockHAP, mockAccessory)
     }).not.toThrow()
+  })
+
+  it('should advertise OPUS at 24 kHz when configured', () => {
+    cameraConfig.videoConfig!.audioCodec = 'OPUS'
+
+    new StreamingDelegate(mockLog, cameraConfig, mockAPI, mockHAP, mockAccessory)
+
+    expect(mockHAP.CameraController).toHaveBeenCalledWith(
+      expect.objectContaining({
+        streamingOptions: expect.objectContaining({
+          audio: expect.objectContaining({
+            codecs: [{ type: 3, samplerate: 24000 }],
+          }),
+        }),
+      }),
+    )
   })
 })

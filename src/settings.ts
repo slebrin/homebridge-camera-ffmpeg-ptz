@@ -108,6 +108,7 @@ export interface VideoConfig {
   mapvideo?: string
   mapaudio?: string
   audio?: boolean
+  audioCodec?: 'AAC-eld' | 'OPUS'
   debug?: boolean
   debugReturn?: boolean
   recording?: boolean

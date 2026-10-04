@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.1.0](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.1.0) (2026-10-04)
+
+### Added
+- Add a per-camera `audioCodec` option with `AAC-eld` compatibility mode and 24 kHz `OPUS` mode.
+
 ## [1.0.4](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.4) (2026-10-04)
 
 ### Changed

@@ -151,6 +151,7 @@ Set `motionTopic` to `__discover__` to print camera-reported topics at informati
 - `forceMax`: If set, the settings requested by HomeKit will be overridden with any 'maximum' values defined in this config. (Default: `false`)
 - `vcodec`: Set the codec used for encoding video sent to HomeKit, must be H.264-based. You can change to a hardware accelerated video codec with this option, if one is available. (Default: `libx264`)
 - `audio`: Enables audio streaming from camera. (Default: `false`)
+- `audioCodec`: Selects the live audio codec advertised to HomeKit. `AAC-eld` uses 16 kHz and remains the compatibility default. `OPUS` uses 24 kHz and can improve choppy audio on supported Apple clients.
 - `packetSize`: If audio or video is choppy try a smaller value, should be set to a multiple of 188. (Default: `1316`)
 - `mapvideo`: Selects the stream used for video. (Default: FFmpeg [automatically selects](https://ffmpeg.org/ffmpeg.html#Automatic-stream-selection) a video stream)
 - `mapaudio`: Selects the stream used for audio. (Default: FFmpeg [automatically selects](https://ffmpeg.org/ffmpeg.html#Automatic-stream-selection) an audio stream)
