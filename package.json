@@ -2,8 +2,8 @@
   "name": "homebridge-camera-ffmpeg-ptz",
   "displayName": "Homebridge Camera FFmpeg PTZ",
   "type": "module",
-  "version": "4.1.0",
-  "description": "Homebridge Plugin Providing FFmpeg-based Camera Support",
+  "version": "1.0.0",
+  "description": "Homebridge Plugin Providing FFmpeg-based Camera Support with PTZ Controls",
   "author": {
     "name": "Khaos Tian"
   },
@@ -13,6 +13,9 @@
     },
     {
       "name": "Khaos Tian"
+    },
+    {
+      "name": "Sylvain Lebrin"
     }
   ],
   "publishConfig": {
@@ -21,7 +24,7 @@
   "license": "ISC",
   "maintainers": [
     {
-      "name": "Homebridge"
+      "name": "Sylvain Lebrin"
     }
   ],
   "funding": [
@@ -44,16 +47,19 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/homebridge-plugins/homebridge-camera-ffmpeg.git"
+    "url": "git+https://github.com/slebrin/homebridge-camera-ffmpeg-ptz.git"
   },
   "bugs": {
-    "url": "http://github.com/homebridge-plugins/homebridge-camera-ffmpeg/issues"
+    "url": "https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/issues"
   },
   "keywords": [
     "homebridge-plugin",
+    "supports-hap",
     "camera",
     "ffmpeg",
-    "homebridge"
+    "homebridge",
+    "ptz",
+    "onvif"
   ],
   "main": "dist/index.js",
   "files": [
