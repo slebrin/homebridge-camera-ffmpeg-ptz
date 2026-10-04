@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.0.3](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.3) (2026-10-04)
+
+### Fixed
+- Start ONVIF motion event listening without requiring an MQTT broker configuration.
+
 ## [1.0.2](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.2) (2026-10-04)
 
 ### Changed

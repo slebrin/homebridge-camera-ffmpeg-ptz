@@ -315,9 +315,8 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
           this.addMqttAction(cameraConfig.mqtt.doorbellTopic, cameraConfig.mqtt.doorbellMessage || cameraConfig.name!, { accessory, active: true, doorbell: true })
         }
       }
-
-      this.startOnvifEvents(accessory, cameraConfig)
     }
+    this.startOnvifEvents(accessory, cameraConfig)
   }
 
   configureAccessory(accessory: PlatformAccessory): void {
