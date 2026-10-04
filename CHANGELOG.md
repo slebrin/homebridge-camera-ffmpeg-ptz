@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.0.4](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.4) (2026-10-04)
+
+### Changed
+- Confirm ONVIF event listener initialization in the Homebridge log.
+- Log discovered ONVIF topics at information level when a topic filter is set to `__discover__`.
+
 ## [1.0.3](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.3) (2026-10-04)
 
 ### Fixed

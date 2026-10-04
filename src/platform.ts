@@ -495,6 +495,7 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
       return
     }
 
+    const discoveryMode = config.motionTopic === '__discover__' || config.personTopic === '__discover__'
     const listener = new OnvifEventListener(
       config,
       (match, active) => {
@@ -502,13 +503,22 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
         this.motionHandler(accessory, active)
       },
       error => this.log.error(`ONVIF event subscription failed: ${error.message}`, camera.name),
-      topic => this.log.debug(`ONVIF event topic: ${topic}`, camera.name),
+      topic => {
+        const message = `ONVIF event topic: ${topic}`
+        if (discoveryMode) {
+          this.log.info(message, camera.name)
+        } else {
+          this.log.debug(message, camera.name)
+        }
+      },
     )
     this.onvifEventListeners.set(accessory.UUID, listener)
-    void listener.start().catch((error: unknown) => {
-      const failure = error instanceof Error ? error : new Error(String(error))
-      this.log.error(`Could not start ONVIF event subscription: ${failure.message}`, camera.name)
-    })
+    void listener.start()
+      .then(() => this.log.info('ONVIF event listener initialized; waiting for camera events.', camera.name))
+      .catch((error: unknown) => {
+        const failure = error instanceof Error ? error : new Error(String(error))
+        this.log.error(`Could not start ONVIF event subscription: ${failure.message}`, camera.name)
+      })
   }
 
   private async startPtzMove(accessory: PlatformAccessory, direction: PtzDirection): Promise<void> {

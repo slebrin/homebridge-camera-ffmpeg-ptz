@@ -138,7 +138,7 @@ The `token` values must match the ONVIF preset tokens assigned by the camera; pr
 }
 ```
 
-Enable Homebridge debug logging with `-D` and check the logs for `ONVIF event topic:` entries. Copy a stable, camera-reported topic substring into `motionTopic` or `personTopic`. Leave `personTopic` unset if the camera does not publish a person-detection event. A matching person event activates the same HomeKit motion sensor as a motion event; HomeKit does not represent person classification through this accessory service.
+Set `motionTopic` to `__discover__` to print camera-reported topics at information level without enabling Homebridge debug logging. Trigger motion, check the logs for `ONVIF event topic:` entries, then copy a stable topic substring into `motionTopic` or `personTopic`. Leave `personTopic` unset if the camera does not publish a person-detection event. A matching person event activates the same HomeKit motion sensor as a motion event; HomeKit does not represent person classification through this accessory service.
 
 ### Optional videoConfig Parameters
 
