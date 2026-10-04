@@ -24,6 +24,12 @@ const PTZ_SWITCH_SUBTYPES: Record<PtzDirection, string> = {
   left: 'PtzLeft',
   right: 'PtzRight',
 }
+const DEFAULT_PTZ_LABELS: Record<PtzDirection, string> = {
+  up: 'Haut',
+  down: 'Bas',
+  left: 'Gauche',
+  right: 'Droite',
+}
 
 function getPtzPresetSubtype(preset: PtzPreset): string {
   const tokenHash = createHash('sha1').update(preset.token).digest('hex').slice(0, 12)
@@ -235,7 +241,7 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
     if (ptzConfig) {
       this.ptzControllers.set(accessory.UUID, new OnvifPtzController(ptzConfig))
       for (const direction of PTZ_DIRECTIONS) {
-        const serviceName = `${cameraConfig.name} PTZ ${direction}`
+        const serviceName = ptzConfig.labels?.[direction]?.trim() || DEFAULT_PTZ_LABELS[direction]
         const service = new this.api.hap.Service.Switch(
           serviceName,
           PTZ_SWITCH_SUBTYPES[direction],
@@ -259,28 +265,8 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
         accessory.addService(service)
       }
 
-      const stopServiceName = `${cameraConfig.name} PTZ Stop`
-      const stopService = new this.api.hap.Service.Switch(stopServiceName, PTZ_STOP)
-      stopService.setCharacteristic(this.api.hap.Characteristic.ConfiguredName, stopServiceName)
-      stopService
-        .getCharacteristic(this.api.hap.Characteristic.On)
-        .on(CharacteristicEventTypes.SET, (state: CharacteristicValue, callback: CharacteristicSetCallback) => {
-          if (state !== true) {
-            callback()
-            return
-          }
-          void this.stopPtz(accessory)
-            .then(() => callback())
-            .catch((error: unknown) => {
-              const failure = error instanceof Error ? error : new Error(String(error))
-              this.log.error(`PTZ stop command failed: ${failure.message}`, cameraConfig.name)
-              callback(failure)
-            })
-        })
-      accessory.addService(stopService)
-
       for (const preset of ptzConfig.presets ?? []) {
-        const presetServiceName = `${cameraConfig.name} PTZ ${preset.name}`
+        const presetServiceName = preset.name.trim()
         const presetService = new this.api.hap.Service.Switch(
           presetServiceName,
           getPtzPresetSubtype(preset),
@@ -464,6 +450,12 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
     if (config.duration !== undefined && (!Number.isInteger(config.duration) || config.duration < 1 || config.duration > 60000)) {
       return 'duration must be an integer between 1 and 60000 milliseconds.'
     }
+    for (const direction of PTZ_DIRECTIONS) {
+      const label = config.labels?.[direction]
+      if (label !== undefined && (typeof label !== 'string' || !label.trim())) {
+        return `the PTZ label for "${direction}" must be a non-empty string.`
+      }
+    }
     const presetTokens = new Set<string>()
     for (const preset of config.presets ?? []) {
       if (typeof preset.name !== 'string' || !preset.name.trim()
@@ -583,32 +575,6 @@ export class FfmpegPlatform implements DynamicPlatformPlugin {
     }, duration)
     timer.unref()
     this.ptzTimers.set(accessory.UUID, timer)
-  }
-
-  private async stopPtz(accessory: PlatformAccessory): Promise<void> {
-    const controller = this.ptzControllers.get(accessory.UUID)
-    if (!controller) {
-      throw new Error('PTZ is not enabled for this camera.')
-    }
-
-    const requestId = (this.ptzRequestIds.get(accessory.UUID) ?? 0) + 1
-    this.ptzRequestIds.set(accessory.UUID, requestId)
-    await controller.stop()
-    if (this.ptzRequestIds.get(accessory.UUID) !== requestId) {
-      return
-    }
-
-    const timer = this.ptzTimers.get(accessory.UUID)
-    if (timer) {
-      clearTimeout(timer)
-      this.ptzTimers.delete(accessory.UUID)
-    }
-    for (const direction of PTZ_DIRECTIONS) {
-      const service = accessory.getServiceById(this.api.hap.Service.Switch, PTZ_SWITCH_SUBTYPES[direction])
-      service?.updateCharacteristic(this.api.hap.Characteristic.On, false)
-    }
-    accessory.getServiceById(this.api.hap.Service.Switch, PTZ_STOP)
-      ?.updateCharacteristic(this.api.hap.Characteristic.On, false)
   }
 
   private async gotoPtzPreset(accessory: PlatformAccessory, preset: PtzPreset): Promise<void> {

@@ -55,7 +55,7 @@ Other users have been sharing configurations that work for them on our GitHub si
 - `motionTimeout`: The number of seconds after triggering to reset the motion sensor. Set to 0 to disable resetting of motion trigger for MQTT or HTTP. (Default: `1`)
 - `motionDoorbell`: Rings the doorbell when motion is activated. This allows for motion alerts to appear on Apple TVs. (Default: `false`)
 - `onvifEvents`: Optional ONVIF PullPoint event listener. Requires `motion: true`, ONVIF host/credentials, and at least one topic filter. Configure `motionTopic` and, when supported by the camera, `personTopic` as case-sensitive substrings of ONVIF event topic names. The listener prints each topic once in Homebridge debug logs (`-D`) to help identify topic filters. Matching person events trigger the same generic HomeKit motion sensor; HomeKit does not receive a person classification from this plugin. ONVIF event names and person analytics support vary by camera firmware.
-- `ptz`: Enables ONVIF pan-tilt controls for a camera. When enabled, HomeKit exposes Up, Down, Left, Right, and Stop switches on the camera accessory. HomeKit shows these as separate switches, not as directional controls inside the camera's live view. Each directional command stops automatically after `duration` milliseconds. Optional `presets` define additional switches that recall named camera positions using their ONVIF tokens. The `host` is required when enabled; `port` defaults to `80`, `speed` to `0.35`, and `duration` to `500` milliseconds. Speed must be greater than `0` and at most `1`; duration must be from `1` to `60000` milliseconds. PTZ requires a camera that supports ONVIF PTZ. ONVIF credentials are stored in the Homebridge configuration, typically in plaintext.
+- `ptz`: Enables ONVIF pan-tilt controls for a camera. When enabled, HomeKit exposes four directional switches on the camera accessory. HomeKit shows these as separate switches, not as directional controls inside the camera's live view. Each command stops automatically after `duration` milliseconds, so no separate Stop switch is exposed. Optional `labels` customize the switch names and default to `Haut`, `Bas`, `Gauche`, and `Droite`. Optional `presets` define additional switches that recall named camera positions using their ONVIF tokens. The `host` is required when enabled; `port` defaults to `80`, `speed` to `0.35`, and `duration` to `500` milliseconds. Speed must be greater than `0` and at most `1`; duration must be from `1` to `60000` milliseconds. PTZ requires a camera that supports ONVIF PTZ. ONVIF credentials are stored in the Homebridge configuration, typically in plaintext.
 - `manufacturer`: Set the manufacturer name for display in the Home app. (Default: `Homebridge`)
 - `model`: Set the model for display in the Home app. (Default: `Camera FFmpeg`)
 - `serialNumber`: Set the serial number for display in the Home app. (Default: `SerialNumber`)
@@ -99,6 +99,12 @@ Other users have been sharing configurations that work for them on our GitHub si
     "password": "your-camera-password",
     "speed": 0.35,
     "duration": 500,
+    "labels": {
+      "up": "Haut",
+      "down": "Bas",
+      "left": "Gauche",
+      "right": "Droite"
+    },
     "presets": [
       {
         "name": "Entrée",

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.0.2](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.2) (2026-10-04)
+
+### Changed
+- Use configurable PTZ direction labels, with `Haut`, `Bas`, `Gauche`, and `Droite` as defaults.
+- Remove the redundant PTZ Stop switch because directional movements stop automatically.
+- Display PTZ preset switches using their configured names.
+
 ## [1.0.1](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.0.1) (2026-10-04)
 
 ### Fixed

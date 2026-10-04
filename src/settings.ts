@@ -75,7 +75,15 @@ export interface PtzConfig {
   password?: string
   speed?: number
   duration?: number
+  labels?: PtzLabels
   presets?: Array<PtzPreset>
+}
+
+export interface PtzLabels {
+  up?: string
+  down?: string
+  left?: string
+  right?: string
 }
 
 export interface PtzPreset {

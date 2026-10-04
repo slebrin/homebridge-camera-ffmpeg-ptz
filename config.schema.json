@@ -263,6 +263,36 @@
                 "maximum": 60000,
                 "default": 500
               },
+              "labels": {
+                "title": "PTZ Button Labels",
+                "type": "object",
+                "properties": {
+                  "up": {
+                    "title": "Up Button",
+                    "type": "string",
+                    "default": "Haut",
+                    "minLength": 1
+                  },
+                  "down": {
+                    "title": "Down Button",
+                    "type": "string",
+                    "default": "Bas",
+                    "minLength": 1
+                  },
+                  "left": {
+                    "title": "Left Button",
+                    "type": "string",
+                    "default": "Gauche",
+                    "minLength": 1
+                  },
+                  "right": {
+                    "title": "Right Button",
+                    "type": "string",
+                    "default": "Droite",
+                    "minLength": 1
+                  }
+                }
+              },
               "presets": {
                 "title": "ONVIF PTZ Presets",
                 "type": "array",
@@ -594,6 +624,10 @@
                     "cameras[].ptz.password",
                     "cameras[].ptz.speed",
                     "cameras[].ptz.duration",
+                    "cameras[].ptz.labels.up",
+                    "cameras[].ptz.labels.down",
+                    "cameras[].ptz.labels.left",
+                    "cameras[].ptz.labels.right",
                     "cameras[].ptz.presets"
                   ]
                 },
