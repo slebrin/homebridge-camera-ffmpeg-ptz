@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. This project uses [Semantic Versioning](https://semver.org/)
 
+## [1.1.2](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.1.2) (2026-10-06)
+
+### Changed
+- Align package ownership, support links, and Apache-2.0 license metadata with this fork.
+- Remove inherited verification, certification, funding, and release references that do not apply to this fork.
+- Add continuous integration for Node.js 22 and 24.
+- Add automatic GitHub Release creation for future version tags.
+
 ## [1.1.1](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/releases/tag/v1.1.1) (2026-10-04)
 
 ### Fixed
