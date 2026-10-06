@@ -1,12 +1,14 @@
 # Homebridge Camera FFmpeg PTZ
 
-[![npm](https://badgen.net/npm/v/homebridge-camera-ffmpeg-ptz) ![npm](https://badgen.net/npm/dt/homebridge-camera-ffmpeg-ptz)](https://www.npmjs.com/package/homebridge-camera-ffmpeg-ptz) [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins) [![certified-hoobs-plugin](https://badgen.net/badge/HOOBS/certified/yellow)](https://plugins.hoobs.org/plugin/homebridge-camera-ffmpeg)
+[![npm](https://badgen.net/npm/v/homebridge-camera-ffmpeg-ptz) ![npm](https://badgen.net/npm/dt/homebridge-camera-ffmpeg-ptz)](https://www.npmjs.com/package/homebridge-camera-ffmpeg-ptz)
 
-[Homebridge](https://homebridge.io) Plugin Providing [FFmpeg](https://www.ffmpeg.org)-based Camera Support
+A [Homebridge](https://homebridge.io) plugin providing [FFmpeg](https://www.ffmpeg.org)-based camera support with ONVIF PTZ controls and event detection.
+
+This project is an independently maintained fork of [`@homebridge-plugins/homebridge-camera-ffmpeg`](https://github.com/homebridge-plugins/homebridge-camera-ffmpeg). It adds ONVIF PTZ controls, presets, ONVIF motion events, configurable PTZ labels, configurable HomeKit audio codecs, and automatic ONVIF event reconnection.
 
 ## Installation
 
-This plugin is supported under both [Homebridge](https://homebridge.io) and [HOOBS](https://hoobs.org/). It is highly recommended that you use either [Homebridge Config UI X](https://www.npmjs.com/package/homebridge-config-ui-x) or the HOOBS UI to install and configure this plugin.
+Install and configure this plugin through [Homebridge Config UI X](https://www.npmjs.com/package/homebridge-config-ui-x).
 
 ### Manual Installation
 
@@ -15,7 +17,7 @@ This plugin is supported under both [Homebridge](https://homebridge.io) and [HOO
 
 ## Tested configurations
 
-Other users have been sharing configurations that work for them on our GitHub site. You may want to [check that](https://homebridge-plugins.github.io/homebridge-camera-ffmpeg/configs/) to see if anyone else has gotten your model of camera working already, or [share](https://github.com/homebridge-plugins/homebridge-camera-ffmpeg/issues/new?assignees=&labels=tested+config&template=tested_config.md) a configuration setup that works for you.
+The upstream project maintains a useful collection of [tested camera configurations](https://homebridge-plugins.github.io/homebridge-camera-ffmpeg/configs/). For problems specific to this fork, open an issue in the [Homebridge Camera FFmpeg PTZ repository](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/issues).
 
 ## Manual Configuration
 
@@ -258,4 +260,8 @@ Set `motionTopic` to `__discover__` to print camera-reported topics at informati
 
 ## Credit
 
-Homebridge Camera FFmpeg is based on code originally written by [Khaos Tian](https://twitter.com/khaost).
+Homebridge Camera FFmpeg PTZ is based on the [`@homebridge-plugins/homebridge-camera-ffmpeg`](https://github.com/homebridge-plugins/homebridge-camera-ffmpeg) project and code originally written by [Khaos Tian](https://twitter.com/khaost). The original authors and contributors remain credited in the package metadata and project history.
+
+## Support
+
+Report bugs and request features through [GitHub Issues](https://github.com/slebrin/homebridge-camera-ffmpeg-ptz/issues). Remove camera credentials, RTSP URLs, tokens, IP addresses, and other sensitive information from logs and configurations before posting.

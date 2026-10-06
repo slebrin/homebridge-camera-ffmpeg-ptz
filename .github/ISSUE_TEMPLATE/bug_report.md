@@ -41,7 +41,7 @@ Remove any sensitive information, such as your homebridge-gsh / google-smarthome
 - **Node.js Version**: <!-- node -v -->
 - **NPM Version**: <!-- npm -v -->
 - **Homebridge Version**: <!-- homebridge -V -->
-- **Homebridge Camera FFmpeg Version**:
+- **Homebridge Camera FFmpeg PTZ Version**:
 - **Homebridge Config UI X Plugin Version**:
 - **Operating System**: <!-- Raspbian / Ubuntu / Debian / Windows / macOS / Docker -->
 

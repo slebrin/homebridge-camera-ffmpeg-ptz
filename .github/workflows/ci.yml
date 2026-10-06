@@ -1,16 +1,20 @@
-name: GitHub Release
+name: CI
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
-    name: Validate Node.js ${{ matrix.node }}
+    name: Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -39,13 +43,3 @@ jobs:
 
       - name: Lint
         run: npm run lint
-
-  release:
-    name: Create GitHub Release
-    needs: validate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" --verify-tag --generate-notes --title "${GITHUB_REF_NAME}"
